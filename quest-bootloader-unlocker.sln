@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34511.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "quest-bootloader-unlocker", "quest-bootloader-unlocker.csproj", "{9CD4D0B5-4455-474F-9696-545A14103BF1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9CD4D0B5-4455-474F-9696-545A14103BF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CD4D0B5-4455-474F-9696-545A14103BF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CD4D0B5-4455-474F-9696-545A14103BF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CD4D0B5-4455-474F-9696-545A14103BF1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7163364C-2EEB-4E0D-BB27-6E04D32D75CD}
+	EndGlobalSection
+EndGlobal
