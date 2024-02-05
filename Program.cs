@@ -14,6 +14,26 @@ namespace Examples;
 internal class Program
 {
 
+    public static Dictionary<string, string>? GetDeviceInfo(QuestUsbDevice device)
+    {
+        Dictionary<string, string> info = new Dictionary<string, string>();
+        device.WriteS("oem device-info");
+        var data = device.ReadS();
+        if (data == null)
+            return null;
+        foreach (var item in data.Split("\n"))
+        {
+            var splitted = item.Replace("INFO", "").Split(":");
+            if (splitted.Length == 2)
+            {
+                info.Add(splitted[0].Trim(), splitted[1].Trim());
+            }
+        }
+        if (info.Count == 0)
+            return null;
+        return info;
+    }
+
     public static void Main(string[] args)
     {
         var patches = new Patches();
@@ -23,30 +43,44 @@ internal class Program
                 Console.WriteLine("Can't find the Quest Device!");
                 return;
             }
-            var selectedVersion = patches.Versions[0];
+            var deviceInfo = GetDeviceInfo(device);
+            if(deviceInfo == null)
+            {
+                Console.WriteLine("Can't get device info!");
+                return;
+            }
+            string? buildNumber;
+            if(!deviceInfo.TryGetValue("Build number", out buildNumber))
+            {
+                Console.WriteLine("Can't get device build number!");
+                return;
+            }
+            Console.WriteLine("Build number: " + buildNumber + "!");
+            var selectedVersion = patches.GetVersion(buildNumber);
+            if (selectedVersion == null)
+            {
+                Console.WriteLine("Build number: " + buildNumber + " not available!");
+                return;
+            }
             var end = selectedVersion.MaxAddress + 1;
-            var buffer = Enumerable.Repeat((byte)0x0C, 0x100000 + end).ToArray();
+            var buffer = Enumerable.Repeat((byte)0x0C, selectedVersion.Overflow + end).ToArray();
             var firmware = File.ReadAllBytes(selectedVersion.File);
             selectedVersion.ApplyTo(ref firmware);
-            Array.Copy(firmware, 0, buffer, 0x100000, end);
-
-            device.WriteS("getvar:serialno");
-            Console.WriteLine("Read: " + device.ReadS());
+            Array.Copy(firmware, 0, buffer, selectedVersion.Overflow, end);
 
             Console.WriteLine("Unlock Device? y/n");
-            if(Console.ReadKey().Key == ConsoleKey.Y) { 
+            if(Console.ReadKey(true).Key == ConsoleKey.Y) { 
                 device.Write(buffer);
-                Console.WriteLine("Read: " + device.ReadS());
+                Console.WriteLine(device.ReadS());
 
                 device.WriteS("flash:unlock_token");
-                Console.WriteLine("Read: " + device.ReadS());
-                Console.WriteLine("Read: " + device.ReadS());
+                Console.WriteLine(device.ReadS());
 
                 device.Close();
             }
         }
-        Console.WriteLine("Finished! Press any key to close...");
-        Console.ReadKey();
+        Console.WriteLine("Finished!\nPress any key to close...");
+        Console.ReadKey(true);
     }
 
 }

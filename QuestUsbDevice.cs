@@ -13,6 +13,15 @@ namespace quest_bootloader_unlocker
         private UsbEndpointWriter _writeEndpoint;
         private UsbEndpointReader _readEnpoint;
 
+        private object _readBufferLock;
+        private List<byte> _readBuffer;
+
+        public QuestUsbDevice()
+        {
+            _readBufferLock = new object();
+            _readBuffer = new List<byte>();
+        }
+
         public bool IsConnected()
         {
             return UsbDevice.AllDevices.Select(v => v.DevicePath).Contains(_device?.DevicePath);
@@ -26,6 +35,17 @@ namespace quest_bootloader_unlocker
 
             _readEnpoint = _device.OpenEndpointReader(ReadEndpointID.Ep01);
             _writeEndpoint = _device.OpenEndpointWriter(WriteEndpointID.Ep01);
+            _readEnpoint.DataReceived += (sender, args) =>
+            {
+                lock(_readBufferLock)
+                {
+                    var buffer = new byte[args.Count];
+                    Array.Copy(args.Buffer, buffer, args.Count);
+                    _readBuffer.AddRange(buffer);
+                    _readBuffer.Add((byte)'\n');
+                }
+            };
+            _readEnpoint.DataReceivedEnabled = true;
             return true;
         }
 
@@ -60,23 +80,24 @@ namespace quest_bootloader_unlocker
         {
             if(!IsConnected())
                 return null;
-
-            List<byte> buffer = new List<byte>();
-            int readBytes = 0;
-            do
+            lock(_readBufferLock)
             {
-                var readBuffer = new byte[512];
-                _readEnpoint.Read(readBuffer, 1000, out readBytes);
-                buffer.AddRange(readBuffer);
-            } while (readBytes == 512);
-            return buffer.ToArray();
+                if (_readBuffer.Count == 0)
+                    return null;
+                var data = _readBuffer.ToArray();
+                _readBuffer.Clear();
+                return data;
+            }
         }
 
         public string? ReadS()
         {
             if (!IsConnected())
                 return null;
-            return Encoding.ASCII.GetString(Read());
+            var data = Read();
+            if(data == null)
+                return null;
+            return Encoding.ASCII.GetString(data);
         }
 
         public void Dispose()
