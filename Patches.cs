@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-
-namespace quest_bootloader_unlocker
+﻿namespace quest_bootloader_unlocker
 {
     public class Patches
     {

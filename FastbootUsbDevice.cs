@@ -4,22 +4,27 @@ using System.Text;
 
 namespace quest_bootloader_unlocker
 {
-    public class QuestUsbDevice : IDisposable
+    public class FastbootUsbDevice : IDisposable
     {
 
-        private static readonly UsbDeviceFinder UsbDeviceFinder = new UsbDeviceFinder(0x2833, 0x81);
+        private UsbDeviceFinder _usbDeviceFinder;
 
-        private UsbDevice _device;
-        private UsbEndpointWriter _writeEndpoint;
-        private UsbEndpointReader _readEnpoint;
+        private UsbDevice? _device;
+        private UsbEndpointReader? _readEnpoint;
+        private UsbEndpointWriter? _writeEndpoint;
 
         private object _readBufferLock;
         private List<byte> _readBuffer;
 
-        public QuestUsbDevice()
+        public FastbootUsbDevice(int vid, int pid)
         {
+            _usbDeviceFinder = new UsbDeviceFinder(vid, pid);
             _readBufferLock = new object();
             _readBuffer = new List<byte>();
+
+            _device = null;
+            _readEnpoint = null;
+            _writeEndpoint = null;
         }
 
         public bool IsConnected()
@@ -29,7 +34,7 @@ namespace quest_bootloader_unlocker
 
         public bool TryConnect()
         {
-            _device = UsbDevice.OpenUsbDevice(UsbDeviceFinder);
+            _device = UsbDevice.OpenUsbDevice(_usbDeviceFinder);
             if (_device == null)
                 return false;
 
