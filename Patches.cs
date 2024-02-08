@@ -9,6 +9,7 @@
         {
             Versions =
             [
+                
                 new PatchesVersion("9248600200800000", "q2_9248600200800000.pe", 0x100000, new Dictionary<int, byte>() {
                         { 0x3e4c8, 0x21 },
 
@@ -17,16 +18,31 @@
                         { 0x3e4dc + 2, 0x00 },
                         { 0x3e4dc + 3, 0x14 },
 
-                        { 0x3e4fc + 0, 0x28 },
+                        { 0x3e4fc, 0x28 },
                         { 0x3e4fc + 1, 0x00 },
                         { 0x3e4fc + 2, 0x80 },
                         { 0x3e4fc + 3, 0xd2 },
 
-                        { 0x3e534 + 0, 0x20 },
+                        { 0x3e534, 0x20 },
                         { 0x3e534 + 1, 0x00 },
                         { 0x3e534 + 2, 0x80 },
                         { 0x3e534 + 3, 0xd2 },
                     }),
+                //Pattern: c9 04 00 54 ?? ?? ff 97 1f 1c 00 72
+                new PatchesVersion("16476800119700000", "q1_16476800119700000.pe", 0x100000, new Dictionary<int, byte>() {
+                        { 0x3777c, 0xb6 },
+                        { 0x3777c + 1, 0x00 },
+                        { 0x3777c + 2, 0x00 },
+                        { 0x3777c + 3, 0x14 },
+                    }),
+
+                new PatchesVersion("16476800118700000", "q2_16476800118700000.pe", 0x100000, new Dictionary<int, byte>() {
+                        { 0x3f1a0, 0xb6 },
+                        { 0x3f1a0 + 1, 0x00 },
+                        { 0x3f1a0 + 2, 0x00 },
+                        { 0x3f1a0 + 3, 0x14 },
+                    }),
+
             ];
         }
 
