@@ -28,7 +28,15 @@
                         { 0x3e534 + 2, 0x80 },
                         { 0x3e534 + 3, 0xd2 },
                     }),
+
                 //Pattern: c9 04 00 54 ?? ?? ff 97 1f 1c 00 72
+                new PatchesVersion("15849800125100000", "q1_15849800125100000.pe", 0x100000, new Dictionary<int, byte>() {
+                        { 0x3767c, 0xb6 },
+                        { 0x3767c + 1, 0x00 },
+                        { 0x3767c + 2, 0x00 },
+                        { 0x3767c + 3, 0x14 },
+                    }),
+
                 new PatchesVersion("16476800119700000", "q1_16476800119700000.pe", 0x100000, new Dictionary<int, byte>() {
                         { 0x3777c, 0xb6 },
                         { 0x3777c + 1, 0x00 },
