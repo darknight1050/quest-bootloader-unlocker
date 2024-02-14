@@ -1,8 +1,8 @@
 # Quest Bootloader Unlocker
 
-This can unlock the bootloader on the Quest 2 if it still runs an old version.
+This can unlock the bootloader on the Quest 1/2 if it still runs an old version.
 
-Latest vulnerable version is `16476800118700000 (29.0.0.65.370.289987413)` from `May 9 2021`.
+Latest vulnerable version is `16476800118700000 (29.0.0.65.370.289987413)` from `May 9 2021` for Quest 2 and `16476800119700000 (29.0.0.66.370.290246252)` from `May 10 2021` for Quest 1.
 
 It uses [CVE-2021-1931](https://nvd.nist.gov/vuln/detail/CVE-2021-1931) a buffer overflow in fastboot that got fixed in [this](https://github.com/tianocore/edk2/commit/0727b7b0d4cafb091397b76f75a3a4f66852a361) commit.<br>
 This [blogpost](https://www.pentestpartners.com/security-blog/breaking-the-android-bootloader-on-the-qualcomm-snapdragon-660/) by Christopher Wade is about the discovery of this vulnerability.<br>
