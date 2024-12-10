@@ -1,4 +1,4 @@
-# Quest Bootloader Unlocker
+# Quest Bootloader Unlocker (PATCHED ON LATEST FIRMWARE)
 
 This can unlock the bootloader on the Quest 1/2 if it still runs an old version.
 
