@@ -1,0 +1,42 @@
+name: Build Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Publish (win-x86 single file)
+        run: dotnet publish quest-bootloader-unlocker.csproj -p:PublishProfile=FolderProfile
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: quest-bootloader-unlocker
+          path: publish/quest-bootloader-unlocker.exe
+
+      - name: Create release
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >
+          gh release create "$env:GITHUB_REF_NAME"
+          "publish/quest-bootloader-unlocker.exe"
+          --title "$env:GITHUB_REF_NAME"
+          --generate-notes
