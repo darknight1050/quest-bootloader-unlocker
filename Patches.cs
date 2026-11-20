@@ -44,6 +44,13 @@
                         { 0x3777c + 3, 0x14 },
                     }),
 
+                new PatchesVersion("12018400103000000", "q2_12018400103000000.pe", 0x100000, new Dictionary<int, byte>() {
+                        { 0x3e014, 0xb6 },
+                        { 0x3e014 + 1, 0x00 },
+                        { 0x3e014 + 2, 0x00 },
+                        { 0x3e014 + 3, 0x14 },
+                    }),
+
                 new PatchesVersion("16476800118700000", "q2_16476800118700000.pe", 0x100000, new Dictionary<int, byte>() {
                         { 0x3f1a0, 0xb6 },
                         { 0x3f1a0 + 1, 0x00 },
